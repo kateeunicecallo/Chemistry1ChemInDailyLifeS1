@@ -93,6 +93,86 @@
     else p.classList.add('hidden');
   }
 
+  function enableMascotDrag() {
+    const panel = $('#mascot-panel');
+    if (!panel || panel._dragBound) return;
+    panel._dragBound = true;
+
+    let dragging = false;
+    let startX = 0, startY = 0, origLeft = 0, origTop = 0;
+
+    function getPoint(e) {
+      if (e.touches && e.touches.length) return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      return { x: e.clientX, y: e.clientY };
+    }
+
+    function onStart(e) {
+      // ignore if hidden
+      if (panel.classList.contains('hidden')) return;
+      const p = getPoint(e);
+      const rect = panel.getBoundingClientRect();
+      dragging = true;
+      panel.classList.add('dragging');
+      startX = p.x;
+      startY = p.y;
+      // switch from bottom/right to left/top for free placement
+      origLeft = rect.left;
+      origTop = rect.top;
+      panel.style.left = origLeft + 'px';
+      panel.style.top = origTop + 'px';
+      panel.style.right = 'auto';
+      panel.style.bottom = 'auto';
+      e.preventDefault();
+    }
+
+    function onMove(e) {
+      if (!dragging) return;
+      const p = getPoint(e);
+      let left = origLeft + (p.x - startX);
+      let top = origTop + (p.y - startY);
+      const maxL = window.innerWidth - panel.offsetWidth - 4;
+      const maxT = window.innerHeight - panel.offsetHeight - 4;
+      left = Math.max(4, Math.min(left, maxL));
+      top = Math.max(4, Math.min(top, maxT));
+      panel.style.left = left + 'px';
+      panel.style.top = top + 'px';
+      e.preventDefault();
+    }
+
+    function onEnd() {
+      if (!dragging) return;
+      dragging = false;
+      panel.classList.remove('dragging');
+      // remember position for this session
+      try {
+        localStorage.setItem('chem1_otter_pos', JSON.stringify({
+          left: panel.style.left,
+          top: panel.style.top
+        }));
+      } catch (err) {}
+    }
+
+    panel.addEventListener('mousedown', onStart);
+    panel.addEventListener('touchstart', onStart, { passive: false });
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('mouseup', onEnd);
+    window.addEventListener('touchend', onEnd);
+
+    // restore last position if any
+    try {
+      const saved = JSON.parse(localStorage.getItem('chem1_otter_pos') || 'null');
+      if (saved && saved.left && saved.top) {
+        panel.style.left = saved.left;
+        panel.style.top = saved.top;
+        panel.style.right = 'auto';
+        panel.style.bottom = 'auto';
+      }
+    } catch (err) {}
+  }
+
+
+
   /* ---- Storage ---- */
   function storageKey(name) {
     return STORAGE_PREFIX + name.trim().toLowerCase().replace(/\s+/g, '_');
@@ -889,6 +969,7 @@
 
   function init() {
     bindNav();
+    enableMascotDrag();
     $('#btn-start').disabled = true;
   }
 
