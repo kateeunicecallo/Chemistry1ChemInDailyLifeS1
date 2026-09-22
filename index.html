@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Chemistry 1 – Chemistry in Daily Life. Grade 11 Academic/Medical interactive mission with Dr. Otter.">
+  <title>Chemistry 1 | Mission with Dr. Otter</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header id="progress-header" class="progress-header hidden">
+    <div class="progress-inner">
+      <img src="assets/images/logo.png" alt="School" class="header-logo" onerror="this.style.display='none'">
+      <div class="progress-main">
+        <div class="progress-label">
+          <span class="mission-title">CHEMISTRY MISSION</span>
+          <span id="tier-label">Tier 1 of 7</span>
+        </div>
+        <div class="progress-bar-track">
+          <div id="progress-fill" class="progress-bar-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <div id="progress-percent" class="progress-percent">0%</div>
+    </div>
+  </header>
+
+  <aside id="mascot-panel" class="mascot-panel hidden">
+    <div class="mascot-sprite-wrap">
+      <img id="mascot-img" src="assets/images/otter-greeting.png" alt="Dr. Otter" onerror="this.style.display='none';document.getElementById('mascot-fallback').style.display='flex'">
+      <div id="mascot-fallback" class="mascot-fallback" style="display:none">🦦</div>
+    </div>
+    <div id="mascot-bubble" class="mascot-bubble">
+      <p id="mascot-text">Hello! I'm Dr. Otter.</p>
+    </div>
+  </aside>
+
+  <main id="app">
+    <!-- TIER 0: BRIEFING -->
+    <section id="screen-briefing" class="screen active">
+      <div class="briefing-wrap">
+        <div class="logo-row">
+          <img src="assets/images/logo.png" alt="School Logo" class="school-logo" onerror="this.style.display='none'">
+        </div>
+        <div class="hero-badge">Elective · Chemistry 1 · Grade 11 Academic (Medical)</div>
+        <h1 class="hero-title">Chemistry in Daily Life</h1>
+        <p class="hero-tagline">A mission with Dr. Otter</p>
+
+        <div class="objectives-box">
+          <h2>Learning Objectives</h2>
+          <ul>
+            <li>Give examples of chemistry applications in health, environment, and industry.</li>
+            <li>Explain how chemistry provides solutions to everyday problems in these fields.</li>
+            <li>Explain one way chemistry contributes to addressing a health, environmental, or industrial challenge using a clear real-world example.</li>
+            <li>Recognize career opportunities in chemistry-related fields.</li>
+          </ul>
+        </div>
+
+        <div class="competencies-box">
+          <h2>Learning Competencies</h2>
+          <ul>
+            <li>Recall fundamental chemistry concepts such as matter, elements, compounds, and reactions.</li>
+            <li>Describe how chemistry contributes to solving real-world problems in health, environment, and industry as well as career opportunities in chemistry-related fields.</li>
+          </ul>
+        </div>
+
+        <div class="name-form">
+          <label for="learner-name">Enter your complete name to begin the mission</label>
+          <input type="text" id="learner-name" placeholder="Full name" maxlength="60" autocomplete="name">
+          <button id="btn-start" class="btn btn-primary" disabled>Start Mission with Dr. Otter</button>
+          <p id="resume-hint" class="resume-hint hidden"></p>
+        </div>
+        <p class="hero-credit">Developed by Kate Eunice R. Callo</p>
+      </div>
+    </section>
+
+    <!-- TIER 1: STORY -->
+    <section id="screen-story" class="screen">
+      <div class="section-header">
+        <span class="section-tag">Tier 1 · Story</span>
+        <h2>The Scrambled Lab</h2>
+      </div>
+      <div class="story-card">
+        <div class="story-otter">
+          <img src="assets/images/otter-greeting.png" alt="Dr. Otter" class="story-img" onerror="this.outerHTML='<div class=&quot;story-emoji&quot;>🦦</div>'">
+        </div>
+        <div class="story-text">
+          <p>Hi, I’m <strong>Dr. Otter</strong> — chemist in a lab gown and your guide on this mission.</p>
+          <p>My lab notes got scrambled! Important ideas about chemistry in daily life are mixed up. I need a sharp explorer to help me restore them — tier by tier.</p>
+          <p>Together we’ll investigate health, environment, and industry. Every correct set of answers unlocks the next tier. At the end you’ll face the Final Assessment and receive your Mission Report.</p>
+          <p class="story-hook">Ready to help me, explorer?</p>
+        </div>
+      </div>
+      <div class="nav-row">
+        <button id="btn-story-next" class="btn btn-primary">I’m ready — let’s go!</button>
+      </div>
+    </section>
+
+    <!-- TIER 2: FACT CHECK -->
+    <section id="screen-factcheck" class="screen">
+      <div class="section-header">
+        <span class="section-tag">Tier 2 · Fact Check</span>
+        <h2>Fact or Myth?</h2>
+        <p class="section-desc">Help Dr. Otter sort true statements from myths. Tap Fact or Myth for each one.</p>
+      </div>
+      <div id="fact-container" class="card-stack"></div>
+      <div class="nav-row">
+        <button id="btn-fact-next" class="btn btn-primary hidden">Unlock Next Tier</button>
+      </div>
+    </section>
+
+    <!-- TIER 3: EVERYDAY CLUES -->
+    <section id="screen-clues" class="screen">
+      <div class="section-header">
+        <span class="section-tag">Tier 3 · Everyday Clues</span>
+        <h2>Chemistry Is Already Around You</h2>
+        <p class="section-desc">Tap each object. Discover the chemistry, then answer a quick question to prove you understood.</p>
+      </div>
+      <div class="object-grid" id="object-grid"></div>
+      <div id="clue-panel" class="clue-panel hidden"></div>
+      <div class="nav-row">
+        <button id="btn-clues-next" class="btn btn-primary hidden">Unlock Investigation Map</button>
+      </div>
+    </section>
+
+    <!-- TIER 4: MAP -->
+    <section id="screen-map" class="screen">
+      <div class="section-header">
+        <span class="section-tag">Tier 4 · Investigation Map</span>
+        <h2>Three Zones to Explore</h2>
+        <p class="section-desc">Visit Health, Environment, and Industry. Complete the short quiz in each zone.</p>
+      </div>
+      <div class="zone-grid" id="zone-grid">
+        <button class="zone-card" data-zone="health" id="zone-health">
+          <div class="zone-visual health-visual"><span class="zone-emoji">🏥</span></div>
+          <h3>Health</h3>
+          <p>Medicine · Body chemistry · Careers</p>
+          <span class="zone-status" id="status-health">Tap to explore</span>
+        </button>
+        <button class="zone-card" data-zone="environment" id="zone-environment">
+          <div class="zone-visual env-visual"><span class="zone-emoji">🌍</span></div>
+          <h3>Environment</h3>
+          <p>Water · Pollutants · Monitoring</p>
+          <span class="zone-status" id="status-environment">Tap to explore</span>
+        </button>
+        <button class="zone-card" data-zone="industry" id="zone-industry">
+          <div class="zone-visual ind-visual"><span class="zone-emoji">🏭</span></div>
+          <h3>Industry</h3>
+          <p>Materials · Manufacturing · Quality</p>
+          <span class="zone-status" id="status-industry">Tap to explore</span>
+        </button>
+      </div>
+      <div id="zone-quiz" class="zone-quiz hidden"></div>
+      <div class="nav-row">
+        <button id="btn-map-next" class="btn btn-primary hidden">Unlock Challenge Lab</button>
+      </div>
+    </section>
+
+    <!-- TIER 5: LAB -->
+    <section id="screen-lab" class="screen">
+      <div class="section-header">
+        <span class="section-tag">Tier 5 · Challenge Lab</span>
+        <h2>Lab Challenges</h2>
+        <p class="section-desc">Sorting, matching, and multiple choice. Complete all three stations.</p>
+      </div>
+      <div class="lab-station" id="station-sort">
+        <h3 class="station-title">Station A · Sorting</h3>
+        <p class="station-desc">Tap an item, then tap its category.</p>
+        <div class="sort-categories" id="sort-categories">
+          <button class="sort-cat" data-cat="health">Health</button>
+          <button class="sort-cat" data-cat="environment">Environment</button>
+          <button class="sort-cat" data-cat="industry">Industry</button>
+          <button class="sort-cat" data-cat="everyday">Everyday Life</button>
+        </div>
+        <div class="sort-items" id="sort-items"></div>
+        <p id="sort-feedback" class="feedback-msg"></p>
+      </div>
+      <div class="lab-station hidden" id="station-match">
+        <h3 class="station-title">Station B · Matching</h3>
+        <p class="station-desc">Match each idea to the correct field. Tap left item, then right category.</p>
+        <div class="match-board" id="match-board"></div>
+        <p id="match-feedback" class="feedback-msg"></p>
+      </div>
+      <div class="lab-station hidden" id="station-mc">
+        <h3 class="station-title">Station C · Scenario Questions</h3>
+        <p class="station-desc">Choose the best answer for each situation.</p>
+        <div id="mc-list"></div>
+      </div>
+      <div class="nav-row">
+        <button id="btn-lab-next" class="btn btn-primary hidden">Unlock Case Files</button>
+      </div>
+    </section>
+
+    <!-- TIER 6: CASES -->
+    <section id="screen-cases" class="screen">
+      <div class="section-header">
+        <span class="section-tag">Tier 6 · Case Files</span>
+        <h2>Real Problems, Clear Choices</h2>
+        <p class="section-desc">Three cases. Select the best answers — closed-ended only.</p>
+      </div>
+      <div id="case-container"></div>
+      <div class="nav-row">
+        <button id="btn-cases-next" class="btn btn-primary hidden">Unlock Final Assessment</button>
+      </div>
+    </section>
+
+    <!-- TIER 7: FINAL -->
+    <section id="screen-final" class="screen">
+      <div class="section-header">
+        <span class="section-tag">Tier 7 · Final Assessment</span>
+        <h2>Mission Final Exam</h2>
+        <p class="section-desc">15 multiple-choice questions. Immediate feedback. Score goes into your Mission Report.</p>
+      </div>
+      <div id="quiz-progress" class="quiz-progress">Question <span id="q-num">1</span> of 15</div>
+      <div id="quiz-container" class="quiz-card"></div>
+      <div id="quiz-result" class="quiz-result hidden"></div>
+      <div class="nav-row">
+        <button id="btn-final-next" class="btn btn-primary hidden">View Mission Report</button>
+      </div>
+    </section>
+
+    <!-- REPORT -->
+    <section id="screen-report" class="screen">
+      <div class="report-card">
+        <div class="complete-badge">MISSION COMPLETE</div>
+        <h2 id="report-name">Well done!</h2>
+        <div class="report-otter">
+          <img src="assets/images/otter-celebrating.png" alt="Dr. Otter celebrating" class="report-img" onerror="this.outerHTML='<div class=&quot;story-emoji&quot;>🎉🦦</div>'">
+        </div>
+        <div class="score-display">
+          <div class="score-item">
+            <span class="score-label">Final Score</span>
+            <span id="final-score" class="score-value">0 / 15</span>
+          </div>
+          <div class="score-item">
+            <span class="score-label">Percentage</span>
+            <span id="final-percent" class="score-value">0%</span>
+          </div>
+        </div>
+        <div id="report-body" class="report-body"></div>
+        <div class="summary-box">
+          <h3>Key Ideas Restored</h3>
+          <ul>
+            <li>Chemistry helps us understand <strong>matter</strong>.</li>
+            <li>Chemistry helps us understand how substances <strong>change</strong>.</li>
+            <li>Chemistry helps us develop <strong>solutions to real-world problems</strong>.</li>
+            <li>Chemistry contributes to <strong>health</strong>, <strong>environment</strong>, <strong>industry</strong>, and many <strong>careers</strong>.</li>
+          </ul>
+        </div>
+        <p class="closing-quote">“Chemistry begins with curiosity and becomes meaningful when it helps solve a real problem.”</p>
+        <p class="affirmation" id="otter-affirmation"></p>
+        <button id="btn-restart" class="btn btn-secondary">Start a New Mission</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="js/app.js"></script>
+</body>
+</html>
